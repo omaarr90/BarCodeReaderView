@@ -10,5 +10,5 @@ Pod::Spec.new do |spec|
   spec.platform = :ios, "8.0"
   spec.requires_arc = true
   spec.source = { git: "https://github.com/omaarr90/BarCodeReaderView.git", tag: "v#{spec.version}", submodules: true }
-  spec.source_files = "BarCodeReaderView/**/*.{h,swift}"
+  spec.source_files = "BarCodeReader/**/*.{h,swift,plist}"
 end
