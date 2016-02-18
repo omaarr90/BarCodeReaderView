@@ -57,7 +57,9 @@ public class BarcodeReaderView: UIView {
     
     public var barCodeTypes: [BarCodeType]? {
         didSet {
-            self.addMetadataOutputToSession(self.captureSession)
+            if nil != self.captureSession {
+                self.addMetadataOutputToSession(self.captureSession)
+            }
         }
     }
 
