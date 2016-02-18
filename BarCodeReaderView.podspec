@@ -7,8 +7,9 @@ Pod::Spec.new do |spec|
   spec.authors = { "Omar Alshammari" => 'omar.alshammary@hotmail.com' }
   spec.social_media_url = "http://twitter.com/omaarr90"
 
-  spec.platform = :ios, "8.0"
-  spec.requires_arc = true
   spec.source = { :git=> "https://github.com/omaarr90/BarCodeReaderView.git", :tag=> "v#{spec.version}", :submodules=> true }
-  spec.source_files = "BarCodeReader/**/*.{h,swift,plist}"
+  spec.source_files  ="BarCodeReader/**/*.{h,swift}"
+  spec.requires_arc = true
+  spec.platform     = :ios
+  spec.ios.deployment_target = "8.0"
 end
