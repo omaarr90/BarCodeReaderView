@@ -14,8 +14,6 @@ private let queueName = "sa.com.elm.AbhserLite.MetadataOutput"
 public protocol BarcodeReaderViewDelegate {
     func barcodeReader(barcodeReader: BarcodeReaderView, didFinishReadingString info: String)
     func barcodeReader(barcodeReader: BarcodeReaderView, didFailReadingWithError error: NSError)
-    func barcodeReaderAllowedBardCodeTypes(barcodeReader: BarcodeReaderView) -> [BarCodeType]
-    
 }
 
 public enum BarCodeType: String, CustomStringConvertible {
@@ -56,6 +54,12 @@ public class BarcodeReaderView: UIView {
     
     /* public Variables */
     public var delegate: BarcodeReaderViewDelegate?
+    
+    public var barCodeTypes: [BarCodeType]? {
+        didSet {
+            self.addMetadataOutputToSession(self.captureSession)
+        }
+    }
 
     /* Private Variables */
     private var captureSession: AVCaptureSession!
@@ -149,7 +153,6 @@ private extension BarcodeReaderView {
     private func setupInitializers() {
         if let captureSession = newVideoCaptureSession() {
             self.captureSession = captureSession
-            addMetadataOutputToSession(captureSession)
         }
     }
     
@@ -197,7 +200,7 @@ private extension BarcodeReaderView {
         session.addOutput(metadataOutput)
         let queue = dispatch_queue_create(queueName, DISPATCH_QUEUE_SERIAL)
         metadataOutput.setMetadataObjectsDelegate(self, queue: queue)
-        if let allowedTypes = self.delegate?.barcodeReaderAllowedBardCodeTypes(self) where allowedTypes.count > 0{
+        if let allowedTypes = self.barCodeTypes where allowedTypes.count > 0{
             metadataOutput.metadataObjectTypes = self.allowedTypes(allowedTypes)
         } else {
             metadataOutput.metadataObjectTypes = nil
