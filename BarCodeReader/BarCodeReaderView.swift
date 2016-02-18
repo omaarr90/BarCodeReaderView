@@ -119,9 +119,11 @@ public class BarcodeReaderView: UIView {
 
 extension BarcodeReaderView: AVCaptureMetadataOutputObjectsDelegate {
     public func captureOutput(captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [AnyObject]!, fromConnection connection: AVCaptureConnection!) {
-        let firstObject = metadataObjects.first as! AVMetadataMachineReadableCodeObject?
+        let firstObject = metadataObjects.first as? AVMetadataMachineReadableCodeObject
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
-            self.delegate?.barcodeReader(self, didFinishReadingString: firstObject!.stringValue)
+            if let readedObject = firstObject, let stringValue = readedObject.stringValue{
+                self.delegate?.barcodeReader(self, didFinishReadingString: stringValue)
+            }
         }
     }
 }
