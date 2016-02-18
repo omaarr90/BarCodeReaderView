@@ -6,8 +6,6 @@ The prefered way to integrate `BarCodeReaderView` is through cocoapods.
 
 Add `pod 'BarCodeReaderView'` to your Podfile.
 
-Then in your project:
-
 
 ## Using it
 first thing you need to import it
@@ -50,17 +48,29 @@ barcodeReader.stopCapturing()
 
 ## Supported Barcode Types
 Aztec
+
 Code128
+
 PDF417Barcode
+
 QR
+
 UPCECode
+
 Code39Code
+
 Code39Mod43Code
+
 EAN13Code
+
 EAN8Code
+
 Interleaved2of5Code
+
 ITF14Code
+
 DataMatrixCode
+
 
 ## Licence
 BarCodeReaderView is available under the MIT license.
