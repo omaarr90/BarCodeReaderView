@@ -83,16 +83,10 @@ public class BarcodeReaderView: UIView {
     
     override public func layoutSubviews() {
         super.layoutSubviews()
-        if nil != self.captureSession && !deviceDoesNotSupportVideo {
-            addPreviewLayerForSession(captureSession)
-        } else if AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo) == .Denied {
-            addLabelToViewWithText(NSLocalizedString("You did not allow access to your camera, please allow it to read barcodes.", comment: ""))
-            self.delegate?.barcodeReader(self, didFailReadingWithError: NSError.accessRestrictionError())
-        } else if deviceDoesNotSupportVideo == true {
-            addLabelToViewWithText(NSLocalizedString("Sorry, Your device does not support camera", comment: ""))
-            self.delegate?.barcodeReader(self, didFailReadingWithError: NSError.deviceNotSupportedError())
+        var token: dispatch_once_t = 0
+        dispatch_once(&token) { () -> Void in
+            self.barcodeLayoutSubViews()
         }
-        
     }
     
     //MARK: - public functions
@@ -218,5 +212,17 @@ private extension BarcodeReaderView {
         }
         
         return types
+    }
+    
+    private func barcodeLayoutSubViews() {
+        if nil != self.captureSession && !deviceDoesNotSupportVideo {
+            addPreviewLayerForSession(captureSession)
+        } else if AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo) == .Denied {
+            addLabelToViewWithText(NSLocalizedString("You did not allow access to your camera, please allow it to read barcodes.", comment: ""))
+            self.delegate?.barcodeReader(self, didFailReadingWithError: NSError.accessRestrictionError())
+        } else if deviceDoesNotSupportVideo == true {
+            addLabelToViewWithText(NSLocalizedString("Sorry, Your device does not support camera", comment: ""))
+            self.delegate?.barcodeReader(self, didFailReadingWithError: NSError.deviceNotSupportedError())
+        }
     }
 }
