@@ -81,12 +81,16 @@ public class BarcodeReaderView: UIView {
         self.setupInitializers()
     }
     
-    override public func layoutSubviews() {
-        super.layoutSubviews()
-        var token: dispatch_once_t = 0
-        dispatch_once(&token) { () -> Void in
-            self.barcodeLayoutSubViews()
-        }
+//    override public func layoutSubviews() {
+//        super.layoutSubviews()
+//        var token: dispatch_once_t = 0
+//        dispatch_once(&token) { () -> Void in
+//            self.barcodeLayoutSubViews()
+//        }
+//    }
+    
+    public override func willMoveToSuperview(newSuperview: UIView?) {
+        self.barcodeLayoutSubViews()
     }
     
     //MARK: - public functions
