@@ -80,17 +80,10 @@ public class BarcodeReaderView: UIView {
         super.init(coder: aDecoder)
         self.setupInitializers()
     }
-    
-//    override public func layoutSubviews() {
-//        super.layoutSubviews()
-//        var token: dispatch_once_t = 0
-//        dispatch_once(&token) { () -> Void in
-//            self.barcodeLayoutSubViews()
-//        }
-//    }
-    
-    public override func willMoveToSuperview(newSuperview: UIView?) {
-        self.barcodeLayoutSubViews()
+        
+    public override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        self.barcodeWillMoveToSuperView()
     }
     
     //MARK: - public functions
@@ -218,7 +211,7 @@ private extension BarcodeReaderView {
         return types
     }
     
-    private func barcodeLayoutSubViews() {
+    private func barcodeWillMoveToSuperView() {
         if nil != self.captureSession && !deviceDoesNotSupportVideo {
             addPreviewLayerForSession(captureSession)
         } else if AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo) == .Denied {
