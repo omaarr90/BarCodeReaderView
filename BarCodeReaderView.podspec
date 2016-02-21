@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name = "BarCodeReaderView"
-  spec.version = "1.0.4"
+  spec.version = "1.0.5"
   spec.summary = "This Framework allows app to read barcodes"
   spec.homepage = "https://github.com/omaarr90/BarCodeReaderView"
   spec.license = { :type => 'MIT', :file=> 'LICENSE' }
