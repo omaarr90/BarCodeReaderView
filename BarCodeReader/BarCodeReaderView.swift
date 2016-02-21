@@ -71,11 +71,24 @@ public class BarcodeReaderView: UIView {
     private var deviceDoesNotSupportVideo: Bool!
     
     //MARK: - initalizers
+    /**
+    initlaize bar code reader view with the specified frame.
+    
+    @param frame: CGRect instance to represent the bar code frame.
+    
+    @return a new instance of bar code reader view.
+    */
     override public init(frame: CGRect) {
         super.init(frame: frame)
         self.setupInitializers()
     }
-    
+    /**
+     initlaize bar code reader view with the specified decoder. this is for IB
+     
+     @param coder: NSCoder instance to decode the view.
+     
+     @return a new instance of bar code reader view.
+     */
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.setupInitializers()
