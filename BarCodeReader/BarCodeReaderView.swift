@@ -11,11 +11,48 @@ import AVFoundation
 
 private let queueName = "sa.com.elm.AbhserLite.MetadataOutput"
 
+/// The barcode reader view delegates.
 public protocol BarcodeReaderViewDelegate {
+    
+    /**
+     This method is called upon a success reading of barcodes.
+     
+     - Parameters:
+        - barcodeReader: The bar code reader view instance which read the barcode.
+        - info: the string representations of the barcode.
+     */
     func barcodeReader(barcodeReader: BarcodeReaderView, didFinishReadingString info: String)
+    
+    /**
+     This method is called upon a failure.
+     
+     - Parameters:
+        - barcodeReader: The bar code reader view instance which failed.
+        - error: NSError which describes the failaure.
+            - possible error codes:
+                - AccessRestriction: 7000
+                - DeviceNotSupported: 7001
+                - OutputNotSuppoted: 7002
+     */
     func barcodeReader(barcodeReader: BarcodeReaderView, didFailReadingWithError error: NSError)
 }
 
+/**
+ Barcode types.
+ 
+ - Aztec: AVMetadataObjectTypeAztecCode
+ - Code128: AVMetadataObjectTypeCode128Code
+ - PDF417Barcode: AVMetadataObjectTypePDF417Code
+ - QR: AVMetadataObjectTypeQRCode
+ - UPCECode: AVMetadataObjectTypeUPCECode
+ - Code39Code: AVMetadataObjectTypeCode39Code
+ - Code39Mod43Code: AVMetadataObjectTypeCode39Mod43Code
+ - EAN13Code: AVMetadataObjectTypeEAN13Code
+ - EAN8Code: AVMetadataObjectTypeEAN8Code
+ - Interleaved2of5Code: AVMetadataObjectTypeInterleaved2of5Code
+ - ITF14Code: AVMetadataObjectTypeITF14Code
+ - DataMatrixCode: AVMetadataObjectTypeDataMatrixCode
+ */
 public enum BarCodeType: String, CustomStringConvertible {
     case Aztec
     case Code128
@@ -30,6 +67,7 @@ public enum BarCodeType: String, CustomStringConvertible {
     case ITF14Code
     case DataMatrixCode
     
+    /// string representations of the bar code type.
     public var description: String {
         get{
             switch self {
@@ -50,11 +88,15 @@ public enum BarCodeType: String, CustomStringConvertible {
     }
 }
 
+/// a UIView subclass which can reads barcodes. :)
 public class BarcodeReaderView: UIView {
     
     /* public Variables */
+    
+    ///the delegate which must conform to `BarcodeReaderViewDelegate` protocol
     public var delegate: BarcodeReaderViewDelegate?
     
+    /// barcodes type you would like to scan with this instance
     public var barCodeTypes: [BarCodeType]? {
         didSet {
             if nil != self.captureSession {
@@ -71,12 +113,14 @@ public class BarcodeReaderView: UIView {
     private var deviceDoesNotSupportVideo: Bool!
     
     //MARK: - initalizers
+    
     /**
     initlaize bar code reader view with the specified frame.
     
-    @param frame: CGRect instance to represent the bar code frame.
+    - Parameters:
+    - frame: CGRect instance to represent the bar code frame.
     
-    @return a new instance of bar code reader view.
+    Returns: a new instance of bar code reader view.
     */
     override public init(frame: CGRect) {
         super.init(frame: frame)
@@ -85,27 +129,38 @@ public class BarcodeReaderView: UIView {
     /**
      initlaize bar code reader view with the specified decoder. this is for IB
      
-     @param coder: NSCoder instance to decode the view.
+     - Parameters:
+     - coder: NSCoder instance to decode the view.
      
-     @return a new instance of bar code reader view.
+     Returns: a new instance of bar code reader view.
      */
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.setupInitializers()
     }
-        
+    
+    /**
+     overriden methods from UIView
+     */
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         self.barcodeWillMoveToSuperView()
     }
     
     //MARK: - public functions
+    
+    /**
+    start looking for barcodes. call this method when you are ready to capture some codes
+    */
     public func startCapturing() {
         if nil != self.captureSession{
             self.captureSession.startRunning()
         }
     }
     
+    /**
+     stop looking for barcodes. call this method when you want to stop capturing barcodes
+     */
     public func stopCapturing() {
         if nil != self.captureSession{
             self.captureSession.stopRunning()
@@ -124,6 +179,9 @@ public class BarcodeReaderView: UIView {
 }
 
 extension BarcodeReaderView: AVCaptureMetadataOutputObjectsDelegate {
+    /**
+     this method is the delegate mthode of AVCaptureMetadataOutputObjectsDelegate
+     */
     public func captureOutput(captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [AnyObject]!, fromConnection connection: AVCaptureConnection!) {
         let firstObject = metadataObjects.first as? AVMetadataMachineReadableCodeObject
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
