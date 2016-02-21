@@ -79,3 +79,7 @@ BarCodeReaderView is available under the MIT license.
 Omar Alshammari
 
 [@Follow me on Twitter](http://twitter.com/omaarr90)
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/omaarr90/barcodereaderview/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
